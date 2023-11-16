@@ -5,7 +5,17 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+
+*{
+  box-sizing: border-box;
+}
+
+a {
+  text-decoration: none;
+  color: #000;
+  box-sizing: border-box;
+  &:hover{
+    color: #323232;
+    text-decoration: none;
+  }
 }
