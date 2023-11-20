@@ -1,11 +1,14 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { 
     signInWithGooglePopup, 
     createUserDocumentFromAuth, 
     signInWithUserEmailAndPassword,
 } from '../../utils/firebase/firebase.utils'
+
 import FormInput from '../form-input/form-input.component';
 import Button from '../button/button.component'
+
+
 import './sign-in-form.styles.scss'
 
 
@@ -17,10 +20,11 @@ const defaultFormFields  = {
 
 const SignInForm = () => {
     
+    //google sign in popup code
     const logGoogleUser = async () => {
         try {
-            const {user} = await signInWithGooglePopup();
-            const userDocRef = await createUserDocumentFromAuth(user);  
+             await signInWithGooglePopup();
+            
         } catch (error) {
             switch(error.code){
                 case 'auth/popup-closed-by-user':
@@ -33,8 +37,9 @@ const SignInForm = () => {
     }
 
     const [formFields, setFormFields] = useState(defaultFormFields);
-    const {  email, password} = formFields;
-    //console.log({formFields});
+    const {  email, password } = formFields;
+    
+       
 
     const resetFormField = () => {
         setFormFields(defaultFormFields);
@@ -44,12 +49,9 @@ const SignInForm = () => {
         event.preventDefault();
        //console.log(email,password);
         try {
-            const response = await signInWithUserEmailAndPassword(email, password); //this will first call to check authorization firebase
-            console.log(response);
-            console.log('Welcome you are log in here is your accessToken')
-            
+            const {user} = await signInWithUserEmailAndPassword(email, password); //this will first call to check authorization firebase
+
             resetFormField();
-            
         } catch (error) {
             switch(error.code){
                 case 'auth/invalid-login-credentials':
