@@ -1,7 +1,10 @@
 import { useState } from "react";
-import { createAuthUserWithEmailAndPassword, createUserDocumentFromAuth } from "../../utils/firebase/firebase.utils";
 import FormInput from '../form-input/form-input.component';
 import Button from "../button/button.component";
+import { createAuthUserWithEmailAndPassword, createUserDocumentFromAuth } from "../../utils/firebase/firebase.utils";
+
+
+
 
 import './sign-up-form.styles.scss';
 
@@ -15,7 +18,10 @@ const defaultFormFields  = {
 const SignUpForm = () => {
     const [formFields, setFormFields] = useState(defaultFormFields);
     const { displayName, email, password, confirmPassword} = formFields;
-    //console.log({formFields});
+
+    
+    
+    console.log('hit');
 
     const resetFormField = () => {
         setFormFields(defaultFormFields);
@@ -31,6 +37,9 @@ const SignUpForm = () => {
         try {
             const {user} = await createAuthUserWithEmailAndPassword(email, password); //this will first call to check authorization firebase
             const userDocRef = await createUserDocumentFromAuth(user, { displayName }); // this will create the user in firebase if authorized first
+            
+            
+
             resetFormField();
             console.log(userDocRef);
         } catch (error) {
