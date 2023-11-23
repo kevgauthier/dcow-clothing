@@ -6,10 +6,10 @@ import {
 } from '../../utils/firebase/firebase.utils'
 
 import FormInput from '../form-input/form-input.component';
-import Button from '../button/button.component'
+import Button, { BUTTON_TYPE_CLASSES } from '../button/button.component'
 
+import {SignInContainer, SignInTitle, WrapButtonContainer} from './sign-in-form.styles.jsx'
 
-import './sign-in-form.styles.scss'
 
 
 const defaultFormFields  = {
@@ -81,8 +81,8 @@ const SignInForm = () => {
 
 
     return (
-        <div className='sign-in-container'>
-            <h2>Already have an account?</h2>
+        <SignInContainer>
+            <SignInTitle>Already have an account?</SignInTitle>
             <span>Sign In with your username and password</span>
             <form onSubmit={handleLogin}>
                 <FormInput 
@@ -104,14 +104,14 @@ const SignInForm = () => {
                 />
             
                 
-                <div className="wrap-button-container">
-                    <Button buttonType='signIn' type="submit">Sign in</Button>
-                    <Button type='button' buttonType='google' onClick={logGoogleUser}>
+                <WrapButtonContainer>
+                    <Button buttonType={BUTTON_TYPE_CLASSES.signIn} type="submit">Sign in</Button>
+                    <Button type='button' buttonType={BUTTON_TYPE_CLASSES.google} onClick={logGoogleUser}>
                         Sign in with google
                     </Button>
-                </div>
+                </WrapButtonContainer>
             </form>
-        </div>
+        </SignInContainer>
     );
 }
 
