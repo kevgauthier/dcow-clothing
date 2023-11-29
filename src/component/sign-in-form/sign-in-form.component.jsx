@@ -1,15 +1,11 @@
-import { useState, useContext } from "react";
-import { 
-    signInWithGooglePopup, 
-    createUserDocumentFromAuth, 
-    signInWithUserEmailAndPassword,
-} from '../../utils/firebase/firebase.utils'
+import { useState } from "react";
+import { useDispatch } from 'react-redux';
 
 import FormInput from '../form-input/form-input.component';
 import Button, { BUTTON_TYPE_CLASSES } from '../button/button.component'
 
 import {SignInContainer, SignInTitle, WrapButtonContainer} from './sign-in-form.styles.jsx'
-
+import { googleSignInStart, emailSignInStart } from '../../store/user/user.action'
 
 
 const defaultFormFields  = {
@@ -19,27 +15,14 @@ const defaultFormFields  = {
 
 
 const SignInForm = () => {
-    
-    //google sign in popup code
-    const logGoogleUser = async () => {
-        try {
-             await signInWithGooglePopup();
-            
-        } catch (error) {
-            switch(error.code){
-                case 'auth/popup-closed-by-user':
-                        console.log("user closed google popup auth");
-                    break;
-                default:
-                console.log("didn't work", error);
-            }
-        }
-    }
-
+    const dispatch = useDispatch();
     const [formFields, setFormFields] = useState(defaultFormFields);
     const {  email, password } = formFields;
-    
-       
+
+    //google sign in popup code
+    const logGoogleUser = async () => {
+        dispatch(googleSignInStart());
+    }
 
     const resetFormField = () => {
         setFormFields(defaultFormFields);
@@ -49,8 +32,7 @@ const SignInForm = () => {
         event.preventDefault();
        //console.log(email,password);
         try {
-            const {user} = await signInWithUserEmailAndPassword(email, password); //this will first call to check authorization firebase
-
+            dispatch(emailSignInStart(email, password));
             resetFormField();
         } catch (error) {
             switch(error.code){
