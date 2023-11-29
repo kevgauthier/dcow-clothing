@@ -1,9 +1,12 @@
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { createAuthUserWithEmailAndPassword, createUserDocumentFromAuth } from "../../utils/firebase/firebase.utils";
+import {SignUpContainer, SignUpTitle} from './sign-up-form.styles.jsx';
+
 import FormInput from '../form-input/form-input.component';
 import Button from "../button/button.component";
-import { createAuthUserWithEmailAndPassword, createUserDocumentFromAuth } from "../../utils/firebase/firebase.utils";
 
-import {SignUpContainer, SignUpTitle} from './sign-up-form.styles.jsx';
+import { signUpStart } from "../../store/user/user.action.js";
 
 const defaultFormFields  = {
     displayName : '',
@@ -16,7 +19,8 @@ const SignUpForm = () => {
     const [formFields, setFormFields] = useState(defaultFormFields);
     const { displayName, email, password, confirmPassword} = formFields;
 
-    
+    const dispatch = useDispatch();
+
     
     console.log('hit');
 
@@ -32,13 +36,8 @@ const SignUpForm = () => {
         }
 
         try {
-            const {user} = await createAuthUserWithEmailAndPassword(email, password); //this will first call to check authorization firebase
-            const userDocRef = await createUserDocumentFromAuth(user, { displayName }); // this will create the user in firebase if authorized first
-            
-            
-
+            dispatch(signUpStart(displayName, email, password));
             resetFormField();
-            console.log(userDocRef);
         } catch (error) {
             //if the user auth is already authorized then there is a chance that they already have account 
             if(error.code === 'auth/email-already-in-use'){
